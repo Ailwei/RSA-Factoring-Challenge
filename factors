@@ -1,37 +1,32 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
-# factors.py
+#Factorize Number
 
 import sys
+import math
 
-def factorize(n):
-    factors = []
-    for i in range(2, n + 1):
-        while n % i == 0:
-            factors.append(i)
-            n //= i
-    return factors
+def open_and_read_file(file_name):
+    """ Read numbers from a file and return them as a list """
+    with open(file_name, "r", encoding="utf-8") as file:
+        lines = file.readlines()
+    
+    num_to_factor = [int(line) for line in lines]
+    return num_to_factor
 
-def main(input_file):
-    try:
-        with open(input_file, 'r') as file:
-            for line in file:
-                n = int(line.strip())
-                factors = factorize(n)
-                if len(factors) == 2:
-                    p, q = factors
-                    print(f"{n}={p}*{q}")
+def factor_number(n):
+    """ Factorize a number and print the factors """
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            print("{} = {} * {}".format(n, i, n // i))
+            break
 
-    except FileNotFoundError:
-        print(f"File '{input_file}' not found.")
-    except ValueError:
-        print("Invalid input in the file. Please ensure all lines are valid natural numbers greater than 1.")
+def factor_numbers(number_list):
+    """ Factorize a list of numbers """
+    for num in number_list:
+        factor_number(num)
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python factors.py <file>")
-        sys.exit(1)
-
-    factors = sys.argv[1]
-    main(factors)
+if len(sys.argv) == 2:
+    input_file = sys.argv[1]
+    num_to_factorize = open_and_read_file(input_file)
+    factor_numbers(numbers_to_factorize)
 
